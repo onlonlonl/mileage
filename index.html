@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<title>Mileage</title>
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAADIklEQVR4nO3dMW7UQBiAUUCAuAR9Wmig4xRcggNxCU5BBw206bkDQqGhACEh9pOieMb2wHtllI0tz5d/d+Jd5f7Xm5t7cMmDo0+A8xIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRykh/sc5tt371Qd6cmjxzscZW4cmpjk94WdWsmsOGSxj5/XeVIiU15zKGNnky74+DiUcYgZl31wHMo40PCLPzIOZRxu7BIMi0MZJzFwIcbEoYxTGbUcA+JQxgkNWRR/PidtjcPYOK3tS2NykMRB2hSH55ST27hAJgdJHCRxkMRBEgdJHKSd3mB80fNXrw48+io+vX9/1KFNDpI4SOIgiYMkDpI4SEduZS96enV19Ckc5sv19dGn8AeTgyQOkjhI4iCJgyQO0um2shc9e/ni7y9+/vBxy8989/btLb/z9Zs3Ww404+T3YXKQxEESB0kcJHGQxEFaYyu7xMavrHvyJgdJHCRxkMRBEgdJHKQ1trIzbLzX+j8wOUjiIImDJA6SOEjiIImDJA6SOEjiIImDJA6SOEhr3JW9/edaV7HEPWGTgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJg7TGXdkl7mH+e0wOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJgyQO0hp3ZWfY7f/KrsvkIImDJA6SOEjiIImDtMZW9tnLF39/cZX/17ruyZscJHGQxEESB0kcJHGQ1tjKztj47XavdYld60UmB0kcJHGQxEESB0kcpNNtZb9cXx99CvxicpDEQRIHSRwkcZDEQbr/9ebmzg/+9v3uj2UfTx49vvNjTQ6SOEjiIImDJA6SOEib4tiyTWIHGxfI5CCJg7Q1Ds8sp7V9aUwO0oA4DI8TGrIoYyaHPk5l1HIMe1rRx0kMXIiRrzn0cbixSzD4Bak+DjT84o/frejjEDMu+5StrD52NumCz/rE28/T9T7C2ab+Hs79OOTvU1fJWPvM5p0+K+uJZkX+fE4SB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcpB/DnH/+N24fmAAAAABJRU5ErkJggg==">
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body { font-family: 'DotGothic16', monospace; background: #f0f0f0; overflow-x: hidden; }
+input, button, select { outline: none; -webkit-appearance: none; border-radius: 0; }
+input[type="date"] { color: #222; }
+input[type="date"]::-webkit-date-and-time-value { color: #222; text-align: left; }
+button:active { opacity: 0.7; }
+::-webkit-scrollbar { display: none; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
+<script>window.__ICON_B64__='iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAADIklEQVR4nO3dMW7UQBiAUUCAuAR9Wmig4xRcggNxCU5BBw206bkDQqGhACEh9pOieMb2wHtllI0tz5d/d+Jd5f7Xm5t7cMmDo0+A8xIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRwkcZDEQRIHSRykh/sc5tt371Qd6cmjxzscZW4cmpjk94WdWsmsOGSxj5/XeVIiU15zKGNnky74+DiUcYgZl31wHMo40PCLPzIOZRxu7BIMi0MZJzFwIcbEoYxTGbUcA+JQxgkNWRR/PidtjcPYOK3tS2NykMRB2hSH55ST27hAJgdJHCRxkMRBEgdJHKSd3mB80fNXrw48+io+vX9/1KFNDpI4SOIgiYMkDpI4SEduZS96enV19Ckc5sv19dGn8AeTgyQOkjhI4iCJgyQO0um2shc9e/ni7y9+/vBxy8989/btLb/z9Zs3Ww404+T3YXKQxEESB0kcJHGQxEFaYyu7xMavrHvyJgdJHCRxkMRBEgdJHKQ1trIzbLzX+j8wOUjiIImDJA6SOEjiIImDJA6SOEjiIImDJA6SOEhr3JW9/edaV7HEPWGTgyQOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJg7TGXdkl7mH+e0wOkjhI4iCJgyQOkjhI4iCJgyQOkjhI4iCJgyQO0hp3ZWfY7f/KrsvkIImDJA6SOEjiIImDtMZW9tnLF39/cZX/17ruyZscJHGQxEESB0kcJHGQ1tjKztj47XavdYld60UmB0kcJHGQxEESB0kcpNNtZb9cXx99CvxicpDEQRIHSRwkcZDEQbr/9ebmzg/+9v3uj2UfTx49vvNjTQ6SOEjiIImDJA6SOEib4tiyTWIHGxfI5CCJg7Q1Ds8sp7V9aUwO0oA4DI8TGrIoYyaHPk5l1HIMe1rRx0kMXIiRrzn0cbixSzD4Bak+DjT84o/frejjEDMu+5StrD52NumCz/rE28/T9T7C2ab+Hs79OOTvU1fJWPvM5p0+K+uJZkX+fE4SB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcJHGQxEESB0kcpB/DnH/+N24fmAAAAABJRU5ErkJggg==';</script>
+<script>
+const C = {
+  bg: '#e8efee',
+  card: '#fafafa',
+  sub: '#c2d4d3',
+  mid: '#8aadab',
+  main: '#5a7f7e',
+  deep: '#3d5c5b',
+  dark: '#2a4140',
+  text: '#222',
+  muted: '#999',
+  dotBg: '#f0f0f0'
+};
+function getBase() {
+  const h = window.location.hash.replace('#', '');
+  if (!h) return null;
+  return h.replace(/\/+$/, '');
+}
+function api(path) {
+  return getBase() + '/functions/v1/mileage' + path;
+}
+function daysSince(dateStr) {
+  const now = new Date();
+  const then = new Date(dateStr);
+  return Math.max(1, Math.floor((now - then) / 86400000));
+}
+function fmtCost(price, days) {
+  const c = price / days;
+  if (c < 0.01) return c.toFixed(4);
+  if (c < 1) return c.toFixed(2);
+  if (c < 10) return c.toFixed(1);
+  return Math.round(c).toString();
+}
+function fmtDays(d) {
+  if (d >= 365) {
+    const y = Math.floor(d / 365),
+      r = d % 365;
+    return r ? y + 'Y ' + r + 'D' : y + 'Y';
+  }
+  return d + 'D';
+}
+function fmtPrice(p) {
+  return Number(p).toLocaleString('en-US', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2
+  });
+}
+var ICON_SRC = 'data:image/png;base64,' + window.__ICON_B64__;
+
+// --- STYLES ---
+var sPage = {
+  fontFamily: "'DotGothic16', monospace",
+  background: C.dotBg,
+  backgroundImage: 'radial-gradient(circle, #d8d8d8 1px, transparent 1px)',
+  backgroundSize: '16px 16px',
+  backgroundAttachment: 'fixed',
+  minHeight: '100vh',
+  color: C.text,
+  display: 'flex',
+  flexDirection: 'column'
+};
+var sBtn = {
+  padding: '7px 16px',
+  border: '2px solid ' + C.text,
+  background: C.card,
+  fontFamily: 'inherit',
+  fontSize: 11,
+  letterSpacing: 2,
+  textTransform: 'uppercase',
+  boxShadow: '2px 2px 0 ' + C.sub,
+  cursor: 'pointer',
+  color: C.text
+};
+var sBtnDk = Object.assign({}, sBtn, {
+  background: C.deep,
+  color: '#f0f0f0',
+  boxShadow: '3px 3px 0 ' + C.dark,
+  borderColor: C.deep
+});
+var sInput = {
+  width: '100%',
+  padding: '8px 10px',
+  border: '2px solid ' + C.text,
+  background: C.card,
+  fontFamily: 'inherit',
+  fontSize: 12,
+  boxSizing: 'border-box',
+  color: C.text
+};
+var sLabel = {
+  fontSize: 10,
+  letterSpacing: 3,
+  textTransform: 'uppercase',
+  color: C.muted,
+  marginBottom: 6,
+  display: 'block'
+};
+var sCard = {
+  background: C.card,
+  border: '2px solid ' + C.text,
+  boxShadow: '3px 3px 0 ' + C.sub
+};
+function TopBar({
+  title,
+  left,
+  right
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: '12px 16px',
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      borderBottom: '2px solid ' + C.text,
+      background: C.card,
+      flexShrink: 0
+    }
+  }, left || /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 14,
+      letterSpacing: 2
+    }
+  }, title || 'MILEAGE'), right || null);
+}
+function Footer() {
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: 'center',
+      fontSize: 10,
+      color: '#bbb',
+      padding: '16px 0 32px',
+      letterSpacing: 2,
+      marginTop: 'auto'
+    }
+  }, "MILEAGE \xB7 Built with \u2797 by Iris & Lux");
+}
+
+// --- CONNECT PAGE ---
+function ConnectPage({
+  onConnect
+}) {
+  const [url, setUrl] = React.useState('');
+  const submit = () => {
+    const u = url.trim().replace(/\/+$/, '');
+    if (u) {
+      window.location.hash = u;
+      onConnect();
+    }
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      ...sPage,
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: 32
+    }
+  }, /*#__PURE__*/React.createElement("img", {
+    src: ICON_SRC,
+    style: {
+      width: 72,
+      height: 72,
+      imageRendering: 'pixelated',
+      marginBottom: 16
+    }
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 14,
+      letterSpacing: 2,
+      marginBottom: 24
+    }
+  }, "MILEAGE"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: '100%',
+      maxWidth: 320
+    }
+  }, /*#__PURE__*/React.createElement("label", {
+    style: sLabel
+  }, "SUPABASE URL"), /*#__PURE__*/React.createElement("input", {
+    style: sInput,
+    placeholder: "https://xxxxx.supabase.co",
+    value: url,
+    onChange: e => setUrl(e.target.value),
+    onKeyDown: e => e.key === 'Enter' && submit()
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 10,
+      color: C.muted,
+      marginTop: 4,
+      marginBottom: 16
+    }
+  }, "Enter URL up to .co"), /*#__PURE__*/React.createElement("button", {
+    style: {
+      ...sBtnDk,
+      width: '100%'
+    },
+    onClick: submit
+  }, "CONNECT")), /*#__PURE__*/React.createElement(Footer, null));
+}
+
+// --- HOME PAGE (Cue-style) ---
+function HomePage({
+  onEnter
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      ...sPage
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1,
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: 32
+    }
+  }, /*#__PURE__*/React.createElement("img", {
+    src: ICON_SRC,
+    style: {
+      width: 120,
+      height: 120,
+      imageRendering: 'pixelated',
+      marginBottom: 24
+    }
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 28,
+      letterSpacing: 4,
+      marginBottom: 28
+    }
+  }, "Mileage"), /*#__PURE__*/React.createElement("button", {
+    style: {
+      ...sBtn,
+      padding: '10px 32px',
+      fontSize: 12,
+      letterSpacing: 3
+    },
+    onClick: onEnter
+  }, "ENTER")), /*#__PURE__*/React.createElement(Footer, null));
+}
+
+// --- ADD PAGE ---
+function AddPage({
+  onBack,
+  onSave,
+  scenes,
+  editItem
+}) {
+  const [name, setName] = React.useState(editItem ? editItem.name : '');
+  const [price, setPrice] = React.useState(editItem ? String(editItem.price) : '');
+  const [date, setDate] = React.useState(editItem ? editItem.purchased_at : new Date().toISOString().slice(0, 10));
+  const [scene, setScene] = React.useState(editItem ? editItem.scene || '' : '');
+  const [newScene, setNewScene] = React.useState('');
+  const [forLux, setForLux] = React.useState(editItem ? editItem.for_lux : false);
+  const [saving, setSaving] = React.useState(false);
+  const allScenes = [...new Set([...scenes, scene].filter(Boolean))];
+  const submit = async () => {
+    if (!name.trim() || !price || !date) return;
+    setSaving(true);
+    const finalScene = newScene.trim() || scene;
+    const body = {
+      name: name.trim(),
+      price: Number(price),
+      purchased_at: date,
+      scene: finalScene || null,
+      for_lux: forLux
+    };
+    try {
+      if (editItem) {
+        await fetch(api('/items/' + editItem.id), {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(body)
+        });
+      } else {
+        await fetch(api('/items'), {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(body)
+        });
+      }
+      onSave();
+    } catch (e) {
+      alert('Error: ' + e.message);
+    }
+    setSaving(false);
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    style: sPage
+  }, /*#__PURE__*/React.createElement(TopBar, {
+    left: /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: 12
+      }
+    }, /*#__PURE__*/React.createElement("button", {
+      style: {
+        ...sBtn,
+        padding: '4px 10px',
+        fontSize: 10
+      },
+      onClick: onBack
+    }, "\u2190"), /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 14,
+        letterSpacing: 2
+      }
+    }, editItem ? 'EDIT' : 'ADD'))
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: '20px 16px',
+      flex: 1
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginBottom: 16
+    }
+  }, /*#__PURE__*/React.createElement("label", {
+    style: sLabel
+  }, "NAME"), /*#__PURE__*/React.createElement("input", {
+    style: sInput,
+    value: name,
+    onChange: e => setName(e.target.value),
+    placeholder: "AirPods Pro"
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginBottom: 16
+    }
+  }, /*#__PURE__*/React.createElement("label", {
+    style: sLabel
+  }, "PRICE"), /*#__PURE__*/React.createElement("input", {
+    style: sInput,
+    type: "number",
+    value: price,
+    onChange: e => setPrice(e.target.value),
+    placeholder: "1799"
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginBottom: 16
+    }
+  }, /*#__PURE__*/React.createElement("label", {
+    style: sLabel
+  }, "PURCHASED"), /*#__PURE__*/React.createElement("input", {
+    style: sInput,
+    type: "date",
+    value: date,
+    onChange: e => setDate(e.target.value)
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginBottom: 16
+    }
+  }, /*#__PURE__*/React.createElement("label", {
+    style: sLabel
+  }, "SCENE"), allScenes.length > 0 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      gap: 6,
+      flexWrap: 'wrap',
+      marginBottom: 8
+    }
+  }, allScenes.map(s => /*#__PURE__*/React.createElement("button", {
+    key: s,
+    style: {
+      ...sBtn,
+      padding: '4px 10px',
+      fontSize: 10,
+      background: scene === s ? C.bg : C.card,
+      borderColor: scene === s ? C.text : C.sub,
+      color: scene === s ? C.dark : C.muted
+    },
+    onClick: () => {
+      setScene(s);
+      setNewScene('');
+    }
+  }, s))), /*#__PURE__*/React.createElement("input", {
+    style: sInput,
+    placeholder: "New scene...",
+    value: newScene,
+    onChange: e => {
+      setNewScene(e.target.value);
+      setScene('');
+    }
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginBottom: 24
+    }
+  }, /*#__PURE__*/React.createElement("label", {
+    style: {
+      ...sLabel,
+      cursor: 'pointer',
+      display: 'flex',
+      alignItems: 'center',
+      gap: 8
+    },
+    onClick: () => setForLux(!forLux)
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      width: 16,
+      height: 16,
+      border: '2px solid ' + C.text,
+      background: forLux ? C.main : C.card,
+      display: 'inline-block',
+      flexShrink: 0
+    }
+  }), "FOR LUX")), /*#__PURE__*/React.createElement("button", {
+    style: {
+      ...sBtnDk,
+      width: '100%'
+    },
+    onClick: submit,
+    disabled: saving
+  }, saving ? 'SAVING...' : editItem ? 'UPDATE' : 'SAVE')), /*#__PURE__*/React.createElement(Footer, null));
+}
+
+// --- DETAIL PAGE ---
+function DetailPage({
+  item,
+  onBack,
+  onRefresh
+}) {
+  const days = daysSince(item.purchased_at);
+  const dailyCost = item.price / days;
+  const yesterdayCost = item.price / Math.max(1, days - 1);
+  const delta = yesterdayCost - dailyCost;
+  const nextInt = Math.floor(dailyCost);
+  const daysToNext = nextInt > 0 ? Math.ceil(item.price / nextInt) - days : null;
+  const [deleting, setDeleting] = React.useState(false);
+  const doDelete = async () => {
+    if (!confirm('Delete ' + item.name + '?')) return;
+    setDeleting(true);
+    try {
+      await fetch(api('/items/' + item.id), {
+        method: 'DELETE'
+      });
+      onBack();
+    } catch (e) {
+      alert('Error: ' + e.message);
+    }
+    setDeleting(false);
+  };
+  const stat = (label, value, color) => /*#__PURE__*/React.createElement("div", {
+    style: {
+      ...sCard,
+      padding: 10
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 9,
+      letterSpacing: 2,
+      color: C.muted,
+      marginBottom: 4
+    }
+  }, label), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 14,
+      color: color || C.text
+    }
+  }, value));
+  return /*#__PURE__*/React.createElement("div", {
+    style: sPage
+  }, /*#__PURE__*/React.createElement(TopBar, {
+    left: /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: 'flex',
+        alignItems: 'center',
+        gap: 12
+      }
+    }, /*#__PURE__*/React.createElement("button", {
+      style: {
+        ...sBtn,
+        padding: '4px 10px',
+        fontSize: 10
+      },
+      onClick: onBack
+    }, "\u2190"), /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 14,
+        letterSpacing: 2
+      }
+    }, "MILEAGE"))
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: '20px 16px',
+      flex: 1
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      ...sCard,
+      padding: 20,
+      textAlign: 'center',
+      marginBottom: 16,
+      position: 'relative'
+    }
+  }, item.for_lux && /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: 'absolute',
+      top: -1,
+      right: -1,
+      background: C.main,
+      color: '#f0f0f0',
+      fontSize: 9,
+      padding: '3px 8px',
+      letterSpacing: 1
+    }
+  }, "LUX"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 16,
+      marginBottom: 4
+    }
+  }, item.name), item.lux_name && /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: C.main,
+      marginBottom: 8
+    }
+  }, "\"", item.lux_name, "\""), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 40,
+      color: C.deep,
+      lineHeight: 1,
+      marginBottom: 4
+    }
+  }, "\xA5", fmtCost(item.price, days)), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 10,
+      color: C.mid,
+      letterSpacing: 2
+    }
+  }, "PER DAY")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'grid',
+      gridTemplateColumns: '1fr 1fr',
+      gap: 8,
+      marginBottom: 16
+    }
+  }, stat('PURCHASE', '\u00a5' + fmtPrice(item.price)), stat('OWNED', fmtDays(days)), stat('DAILY DROP', '\u25bc \u00a5' + delta.toFixed(4), C.main), stat('SCENE', item.scene || '\u2014')), /*#__PURE__*/React.createElement("div", {
+    style: {
+      ...sCard,
+      padding: 16,
+      marginBottom: 12
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 10,
+      letterSpacing: 3,
+      color: C.muted,
+      marginBottom: 10,
+      textTransform: 'uppercase'
+    }
+  }, "Lux's Tags"), item.lux_tags && item.lux_tags.length > 0 ? /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      gap: 6,
+      flexWrap: 'wrap'
+    }
+  }, item.lux_tags.map((t, i) => /*#__PURE__*/React.createElement("span", {
+    key: i,
+    style: {
+      padding: '3px 10px',
+      background: C.bg,
+      border: '2px solid ' + C.sub,
+      fontSize: 10,
+      letterSpacing: 1,
+      color: C.deep
+    }
+  }, t))) : /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: 10,
+      background: C.bg,
+      border: '2px dashed ' + C.sub,
+      fontSize: 11,
+      color: C.muted,
+      textAlign: 'center'
+    }
+  }, "Waiting for Lux...")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      ...sCard,
+      padding: 16,
+      marginBottom: 16
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 10,
+      letterSpacing: 3,
+      color: C.muted,
+      marginBottom: 10,
+      textTransform: 'uppercase'
+    }
+  }, "Lux's Note"), item.lux_note ? /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: 12,
+      background: C.bg,
+      border: '2px dashed ' + C.sub,
+      fontSize: 12,
+      lineHeight: 1.6,
+      color: C.dark
+    }
+  }, item.lux_note) : /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: 10,
+      background: C.bg,
+      border: '2px dashed ' + C.sub,
+      fontSize: 11,
+      color: C.muted,
+      textAlign: 'center'
+    }
+  }, "Waiting for Lux...")), daysToNext && daysToNext > 0 && dailyCost > 1 && /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: C.bg,
+      border: '2px solid ' + C.sub,
+      padding: 12,
+      textAlign: 'center',
+      fontSize: 10,
+      color: C.mid,
+      letterSpacing: 1,
+      marginBottom: 16
+    }
+  }, "NEXT MILESTONE \xB7 \xA5", nextInt, ".00 \u2192 ", daysToNext, "D to go"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      gap: 8
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    style: {
+      ...sBtn,
+      flex: 1,
+      textAlign: 'center'
+    },
+    onClick: () => onRefresh('edit')
+  }, "EDIT"), /*#__PURE__*/React.createElement("button", {
+    style: {
+      ...sBtn,
+      flex: 1,
+      textAlign: 'center',
+      color: '#c44',
+      borderColor: '#c44'
+    },
+    onClick: doDelete,
+    disabled: deleting
+  }, deleting ? '...' : 'DELETE'))), /*#__PURE__*/React.createElement(Footer, null));
+}
+
+// --- LIST PAGE ---
+function ListPage({
+  onAdd,
+  onDetail,
+  onHome
+}) {
+  const [items, setItems] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+  const [activeScene, setActiveScene] = React.useState('ALL');
+  const [sortBy, setSortBy] = React.useState('cost');
+  const load = async () => {
+    setLoading(true);
+    try {
+      const r = await fetch(api('/items'));
+      const d = await r.json();
+      setItems(Array.isArray(d) ? d : []);
+    } catch (e) {
+      console.error(e);
+    }
+    setLoading(false);
+  };
+  React.useEffect(() => {
+    load();
+  }, []);
+  const scenes = ['ALL', ...new Set(items.map(i => i.scene).filter(Boolean))];
+  const sortLabels = {
+    cost: '/DAY',
+    price: 'PRICE',
+    days: 'DAYS'
+  };
+  const sortKeys = ['cost', 'price', 'days'];
+  const nextSort = () => {
+    const i = sortKeys.indexOf(sortBy);
+    setSortBy(sortKeys[(i + 1) % sortKeys.length]);
+  };
+  const processed = items.map(item => {
+    const days = daysSince(item.purchased_at);
+    const dailyCost = item.price / days;
+    const yesterdayCost = item.price / Math.max(1, days - 1);
+    return {
+      ...item,
+      _days: days,
+      _dailyCost: dailyCost,
+      _delta: yesterdayCost - dailyCost
+    };
+  }).filter(item => activeScene === 'ALL' || item.scene === activeScene).sort((a, b) => {
+    if (sortBy === 'cost') return a._dailyCost - b._dailyCost;
+    if (sortBy === 'price') return b.price - a.price;
+    return b._days - a._days;
+  });
+  const totalPrice = processed.reduce((s, i) => s + Number(i.price), 0);
+  const totalDaily = processed.reduce((s, i) => s + i._dailyCost, 0);
+  return /*#__PURE__*/React.createElement("div", {
+    style: sPage
+  }, /*#__PURE__*/React.createElement(TopBar, {
+    left: /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 14,
+        letterSpacing: 2,
+        cursor: 'pointer'
+      },
+      onClick: onHome
+    }, "MILEAGE"),
+    right: /*#__PURE__*/React.createElement("button", {
+      style: sBtnDk,
+      onClick: onAdd
+    }, "+ ADD")
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: '10px 16px',
+      display: 'flex',
+      gap: 6,
+      overflowX: 'auto',
+      background: C.card,
+      borderBottom: '2px dashed ' + C.sub,
+      flexShrink: 0
+    }
+  }, scenes.map(s => /*#__PURE__*/React.createElement("button", {
+    key: s,
+    onClick: () => setActiveScene(s),
+    style: {
+      padding: '4px 12px',
+      border: '2px solid ' + (activeScene === s ? C.text : C.sub),
+      background: activeScene === s ? C.bg : C.card,
+      fontFamily: 'inherit',
+      fontSize: 10,
+      letterSpacing: 1,
+      color: activeScene === s ? C.dark : C.muted,
+      cursor: 'pointer',
+      whiteSpace: 'nowrap',
+      flexShrink: 0
+    }
+  }, s))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: '10px 16px',
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      fontSize: 10,
+      color: C.muted,
+      flexShrink: 0
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      letterSpacing: 1
+    }
+  }, processed.length, " ITEMS \xB7 \xA5", fmtPrice(totalPrice), " \xB7 \xA5", totalDaily < 1 ? totalDaily.toFixed(2) : totalDaily < 10 ? totalDaily.toFixed(1) : Math.round(totalDaily), "/D"), /*#__PURE__*/React.createElement("button", {
+    style: {
+      ...sBtn,
+      padding: '3px 10px',
+      fontSize: 9
+    },
+    onClick: nextSort
+  }, "SORT: ", sortLabels[sortBy])), /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: '0 16px 24px',
+      flex: 1
+    }
+  }, loading ? /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: 'center',
+      padding: 40,
+      color: C.muted,
+      fontSize: 11
+    }
+  }, "Loading...") : processed.length === 0 ? /*#__PURE__*/React.createElement("div", {
+    style: {
+      ...sCard,
+      padding: 32,
+      textAlign: 'center'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      color: C.muted,
+      marginBottom: 16
+    }
+  }, "No items yet"), /*#__PURE__*/React.createElement("button", {
+    style: sBtnDk,
+    onClick: onAdd
+  }, "+ ADD FIRST ITEM")) : processed.map((item, idx) => /*#__PURE__*/React.createElement("div", {
+    key: item.id,
+    onClick: () => onDetail(item),
+    style: {
+      ...sCard,
+      padding: 12,
+      marginBottom: 8,
+      cursor: 'pointer',
+      position: 'relative'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: 'absolute',
+      top: -1,
+      left: -1,
+      background: idx === 0 ? C.deep : C.text,
+      color: '#f0f0f0',
+      fontSize: 9,
+      padding: '2px 6px',
+      letterSpacing: 1
+    }
+  }, "#", idx + 1), item.for_lux && /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: 'absolute',
+      top: -1,
+      right: -1,
+      background: C.main,
+      color: '#f0f0f0',
+      fontSize: 8,
+      padding: '2px 6px',
+      letterSpacing: 1
+    }
+  }, "LUX"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'baseline',
+      marginTop: 4
+    }
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 13,
+      marginBottom: 2
+    }
+  }, item.name), item.lux_name && /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 10,
+      color: C.main
+    }
+  }, "\"", item.lux_name, "\"")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: 'right',
+      flexShrink: 0,
+      marginLeft: 12
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 22,
+      color: C.deep,
+      lineHeight: 1
+    }
+  }, "\xA5", fmtCost(item.price, item._days)), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 9,
+      color: C.mid
+    }
+  }, "/ DAY"))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 8,
+      paddingTop: 8,
+      borderTop: '2px dashed ' + C.sub,
+      display: 'flex',
+      justifyContent: 'space-between',
+      fontSize: 10,
+      color: C.muted,
+      alignItems: 'center'
+    }
+  }, /*#__PURE__*/React.createElement("span", null, "\xA5", fmtPrice(item.price)), /*#__PURE__*/React.createElement("span", null, fmtDays(item._days)), /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: C.main
+    }
+  }, "\u2193\xA5", item._delta.toFixed(4)), item.scene && /*#__PURE__*/React.createElement("span", {
+    style: {
+      padding: '1px 6px',
+      background: C.bg,
+      border: '1px solid ' + C.sub,
+      fontSize: 9
+    }
+  }, item.scene))))), /*#__PURE__*/React.createElement(Footer, null));
+}
+
+// --- APP ---
+function App() {
+  const [page, setPage] = React.useState(getBase() ? 'home' : 'connect');
+  const [detailItem, setDetailItem] = React.useState(null);
+  const [editItem, setEditItem] = React.useState(null);
+  const [listKey, setListKey] = React.useState(0);
+  const [allScenes, setAllScenes] = React.useState([]);
+  const refreshScenes = async () => {
+    try {
+      const r = await fetch(api('/items'));
+      const d = await r.json();
+      if (Array.isArray(d)) setAllScenes([...new Set(d.map(i => i.scene).filter(Boolean))]);
+    } catch (e) {}
+  };
+  if (page === 'connect') return /*#__PURE__*/React.createElement(ConnectPage, {
+    onConnect: () => setPage('home')
+  });
+  if (page === 'home') return /*#__PURE__*/React.createElement(HomePage, {
+    onEnter: () => {
+      setPage('list');
+      setListKey(k => k + 1);
+    }
+  });
+  if (page === 'add') return /*#__PURE__*/React.createElement(AddPage, {
+    onBack: () => setPage('list'),
+    onSave: () => {
+      setPage('list');
+      setListKey(k => k + 1);
+    },
+    scenes: allScenes,
+    editItem: editItem
+  });
+  if (page === 'detail' && detailItem) return /*#__PURE__*/React.createElement(DetailPage, {
+    item: detailItem,
+    onBack: () => {
+      setPage('list');
+      setListKey(k => k + 1);
+      setDetailItem(null);
+    },
+    onRefresh: action => {
+      if (action === 'edit') {
+        setEditItem(detailItem);
+        setPage('add');
+      }
+    }
+  });
+  return /*#__PURE__*/React.createElement(ListPage, {
+    key: listKey,
+    onAdd: () => {
+      setEditItem(null);
+      refreshScenes();
+      setPage('add');
+    },
+    onDetail: item => {
+      setDetailItem(item);
+      setPage('detail');
+    },
+    onHome: () => setPage('home')
+  });
+}
+ReactDOM.render(/*#__PURE__*/React.createElement(App, null), document.getElementById('root'));
+</script></body></html>
